@@ -3,12 +3,17 @@ export function sayHiOnDispatch(createStore) {
     const store = createStore(rootReducer, preloadedState, enhancers);
 
     function newDispatch(action) {
-      const result = store.dispatch(action);
       console.log("Hi!");
-      return result;
+      return store.dispatch(action);
     }
 
-    return { ...store, dispatch: newDispatch };
+    return {
+      ...store,
+      dispatch: newDispatch,
+      subscribe: () => {
+        console.log("this is my own subscriber from enhancer.");
+      },
+    };
   };
 }
 

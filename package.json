@@ -14,5 +14,8 @@
   },
   "scripts": {
     "dev": "vite dev"
+  },
+  "devDependencies": {
+    "@redux-devtools/extension": "^3.2.3"
   }
 }
