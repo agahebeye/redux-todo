@@ -1,21 +1,15 @@
-const initialState = {
-  filters: {
-    status: 'All',
-    colors: [],
-  },
+const filtersState = {
+  status: "All",
+  colors: [],
 };
 
-export function filtersSlice(state = initialState, action) {
+export function filtersSlice(state = filtersState, action) {
   switch (action.type) {
-    case 'filters/statusChanged': {
+    case "filters/statusChanged":
       return {
         ...state,
-        filters: {
-          ...state.filters,
-          status: action.payload,
-        },
+        status: action.payload,
       };
-    }
 
     default:
       return state;

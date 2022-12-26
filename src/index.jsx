@@ -5,7 +5,14 @@ import { store } from "./store";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
-console.log(store.getState());
+console.log("Initial state: ", store.getState());
+const unsubscribe = store.subscribe(() => {
+  console.log("State after dispatch: ", store.getState());
+});
+
+store.dispatch({ type: "todos/added", payload: "Learn about actions" });
+
+unsubscribe();
 
 root.render(
   <StrictMode>
