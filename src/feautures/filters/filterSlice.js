@@ -5,7 +5,7 @@ const initialState = {
   },
 };
 
-export function filtersReducer(state = initialState, action) {
+export function filtersSlice(state = initialState, action) {
   switch (action.type) {
     case 'filters/statusChanged': {
       return {

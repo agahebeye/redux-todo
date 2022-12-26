@@ -1,5 +1,5 @@
 const initialState = {
-  todos: [{ id: 0, text: 'Learn React', completed: true }],
+  todos: [{ id: 0, text: "Learn React", completed: true }],
 };
 
 function nextTodoId(todos) {
@@ -7,9 +7,9 @@ function nextTodoId(todos) {
   return maxId + 1;
 }
 
-export function todosReducer(state = initialState, action) {
+export function todosSlice(state = initialState, action) {
   switch (action.type) {
-    case 'todos/added':
+    case "todos/added":
       return {
         ...state,
         todos: [
@@ -22,7 +22,7 @@ export function todosReducer(state = initialState, action) {
         ],
       };
 
-    case 'todos/toggled': {
+    case "todos/toggled": {
       return {
         ...state,
         todos: state.todos.map((todo) =>
