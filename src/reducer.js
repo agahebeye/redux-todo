@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
   todos: [],
   filters: {
     colors: [],
@@ -6,7 +6,7 @@ const initialState = {
   },
 };
 
-export function reducer(state = initialState, action) {
+export function reducer(state, action) {
   const { type, payload } = action;
 
   switch (type) {
