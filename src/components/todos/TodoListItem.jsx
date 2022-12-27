@@ -10,8 +10,6 @@ export function TodoListItem(props) {
     return state.todos.find((todo) => todo.id === props.id);
   });
 
-  console.log(todo);
-
   return (
     <li>
       <div>
@@ -29,7 +27,7 @@ export function TodoListItem(props) {
 
         <div>
           <select
-            value={todo?.color}
+            value={todo.color}
             onChange={(e) =>
               dispatch({
                 type: "todos/colorSelected",

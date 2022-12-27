@@ -3,81 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { availableColors } from "./filters/colors";
 import { statusTypes } from "./filters/filtersReducer";
 
-// const RemainingTodos = ({ count }) => {
-//   const suffix = count === 1 ? "" : "s";
-
-//   return (
-//     <divodo-count">
-//       <h5>Remaining Todos</h5>
-//       <strong>{count}</strong> item{suffix} left
-//     </div>
-//   );
-// };
-
-// const StatusFilter = ({ value: status, onChange }) => {
-//   const renderedFilters = Object.keys(statusTypes).map((key) => {
-//     const value = statusTypes[key];
-//     const handleClick = () => onChange(value);
-//     constvalue === status ? "selected" : "";
-
-//     return (
-//       <li key={value}>
-//         <buttonnClick={handleClick}>
-//           {key}
-//         </button>
-//       </li>
-//     );
-//   });
-
-//   return (
-//     <divilters statusFilters">
-//       <h5>Filter by statusTypes</h5>
-//       <ul>{renderedFilters}</ul>
-//     </div>
-//   );
-// };
-
-// const ColorFilters = ({ value: colors, onChange }) => {
-//   const renderedColors = availableColors.map((color) => {
-//     const checked = colors.includes(color);
-//     const handleChange = () => {
-//       const changeType = checked ? "removed" : "added";
-//       onChange(color, changeType);
-//     };
-
-//     return (
-//       <label key={color}>
-//         <input
-//           type="checkbox"
-//           name={color}
-//           checked={checked}
-//           onChange={handleChange}
-//         />
-//         <span
-//          olor-block"
-//           style={{
-//             backgroundColor: color,
-//           }}
-//         ></span>
-//         {color}
-//       </label>
-//     );
-//   });
-
-//   return (
-//     <divilters colorFilters">
-//       <h5>Filter by Color</h5>
-//       <formolorSelection">{renderedColors}</form>
-//     </div>
-//   );
-// };
-
 export function Footer() {
   const dispatch = useDispatch();
 
   const todosRemaining = useSelector((state) => {
-    const uncompletedTodos = state.todos.filter((todo) => !todo.completed);
-    return uncompletedTodos.length;
+    return state.todos.filter((todo) => !todo.completed).length;
   });
 
   const { colors } = useSelector((state) => state.filters);
@@ -88,7 +18,7 @@ export function Footer() {
         <button onClick={() => dispatch({ type: "todos/markAllCompleted" })}>
           Mark All Completed
         </button>
-        <button onClick={() => dispatch({ type: "clearCompleted" })}>
+        <button onClick={() => dispatch({ type: "todos/clearCompleted" })}>
           Clear Completed
         </button>
       </div>
