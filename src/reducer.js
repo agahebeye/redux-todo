@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import { todosReducer } from "./features/todos/todosReducer";
-import { filtersReducer } from "./features/filters/filtersReducer";
+import { todosReducer } from "./components/todos/todosReducer";
+import { filtersReducer } from "./components/filters/filtersReducer";
 
 export const initialState = {
   todos: [],
