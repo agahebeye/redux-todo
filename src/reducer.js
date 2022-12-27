@@ -1,3 +1,7 @@
+import { combineReducers } from "redux";
+import { todosReducer } from "./features/todos/todosReducer";
+import { filtersReducer } from "./features/filters/filtersReducer";
+
 export const initialState = {
   todos: [],
   filters: {
@@ -6,42 +10,7 @@ export const initialState = {
   },
 };
 
-export function reducer(state, action) {
-  const { type, payload } = action;
-
-  switch (type) {
-    case "todos/added":
-      return {
-        ...state,
-        todos: [
-          ...state.todos,
-          {
-            id: Math.random().toString().substring(2, 9),
-            text: payload,
-            done: false,
-          },
-        ],
-      };
-    case "todos/toggled":
-      return {
-        ...state,
-        todos: state.todos.map((todo) => {
-          if (todo.id !== payload) {
-            return todo;
-          }
-
-          return { ...todo, done: !todo.done };
-        }),
-      };
-    case "filters/statusChanged":
-      return {
-        ...state,
-        filters: {
-          ...state.filters,
-          status: payload,
-        },
-      };
-    default:
-      return state;
-  }
-}
+export const reducer = combineReducers({
+  todos: todosReducer,
+  filters: filtersReducer,
+});
