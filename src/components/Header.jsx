@@ -10,7 +10,7 @@ export function Header() {
   const handleKeyDown = (e) => {
     const value = e.target.value.trim();
     if (e.key === "Enter" && value) {
-      dispatch({ type: "todos/todoAdded", payload: value });
+      dispatch({ type: "todos/added", payload: value });
       setText("");
     }
   };
