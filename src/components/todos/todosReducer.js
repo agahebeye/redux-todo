@@ -2,6 +2,9 @@ export function todosReducer(state = [], action) {
   const { type, payload } = action;
 
   switch (type) {
+    case "todos/loaded":
+      return action.payload;
+
     case "todos/added":
       return [
         ...state,
@@ -52,4 +55,10 @@ export function todosReducer(state = [], action) {
     default:
       return state;
   }
+}
+
+export async function fetchTodos(dispatch, getState) {
+  const response = await fetch("/api/todos");
+  const data = await response.json();
+  dispatch({ type: "todos/loaded", payload: data.todos });
 }
