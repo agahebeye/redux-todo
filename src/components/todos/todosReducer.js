@@ -1,50 +1,74 @@
 import { createSelector } from "reselect";
+import { statusTypes } from "../filters/filtersReducer";
 
-export function todosReducer(state = [], action) {
+const initialState = {
+  status: "loading",
+  items: [],
+};
+
+export function todosReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
     case "todos/loaded":
-      return action.payload;
+      return {
+        status: state.status,
+        items: action.payload,
+      };
 
     case "todos/added":
-      return [...state, action.payload];
+      return { status: state.status, items: [...state.items, action.payload] };
 
     case "todos/toggled":
-      return state.map((todo) => {
-        if (todo.id !== payload) {
-          return todo;
-        }
+      return {
+        status: state.status,
+        items: state.items.map((todo) => {
+          if (todo.id !== payload) {
+            return todo;
+          }
 
-        return { ...todo, done: !todo.done };
-      });
+          return { ...todo, done: !todo.done };
+        }),
+      };
 
     case "todos/deleted": {
-      return state.filter((todo) => todo.id !== action.payload);
+      return {
+        status: state.status,
+        items: state.items.filter((todo) => todo.id !== action.payload),
+      };
     }
 
     case "todos/markAllCompleted": {
-      return state.map((todo) => {
-        return { ...todo, done: true };
-      });
+      return {
+        status: state.status,
+        items: state.items.map((todo) => {
+          return { ...todo, done: true };
+        }),
+      };
     }
 
     case "todos/clearCompleted": {
-      return state.filter((todo) => !todo.done);
+      return {
+        status: state.status,
+        items: state.items.filter((todo) => !todo.done),
+      };
     }
 
     case "todos/colorSelected": {
       const { color, todoId } = action.payload;
-      return state.map((todo) => {
-        if (todo.id !== todoId) {
-          return todo;
-        }
+      return {
+        status: state.status,
+        items: state.items.map((todo) => {
+          if (todo.id !== todoId) {
+            return todo;
+          }
 
-        return {
-          ...todo,
-          color,
-        };
-      });
+          return {
+            ...todo,
+            color,
+          };
+        }),
+      };
     }
 
     default:
@@ -72,7 +96,38 @@ export function saveTodo(text) {
   };
 }
 
-export const selectTodoIds = createSelector(
-  (state) => state.todos,
+export const selectTodos = (state) => state.todos.items;
+
+export const selectFilteredTodos = createSelector(
+  selectTodos,
+  (state) => state.filters,
+  (todos, filters) => {
+    const showAll = filters.status === statusTypes.All;
+    if (showAll && filters.color.length === 0) {
+      return todos;
+    }
+
+    const completedStatus = filters.status === statusTypes.Completed;
+
+    return todos.filter((todo) => {
+      const statusMatched = showAll || todo.done === completedStatus;
+      const colorMatched =
+        filters.color.length === 0 || filters.color.include(todo.color);
+
+      return statusMatched && colorMatched;
+    });
+  }
+);
+
+export const selectTodoIds = createSelector(selectTodos, (todos) =>
+  todos.map((todo) => todo.id)
+);
+
+export const selectFilteredTodoIds = createSelector(
+  selectFilteredTodos,
   (todos) => todos.map((todo) => todo.id)
 );
+
+export const selectTodoById = (state, id) => {
+  return selectTodos(state).find((todo) => todo.id === id);
+};

@@ -2,12 +2,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { availableColors } from "./filters/colors";
 import { statusTypes } from "./filters/filtersReducer";
+import { selectTodos } from "./todos/todosReducer";
 
 export function Footer() {
   const dispatch = useDispatch();
 
   const todosRemaining = useSelector((state) => {
-    return state.todos.filter((todo) => !todo.completed).length;
+    return selectTodos(state).filter((todo) => !todo.completed).length;
   });
 
   const { colors } = useSelector((state) => state.filters);

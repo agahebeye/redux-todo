@@ -41,13 +41,13 @@ createServer({
   },
   factories: {
     todo: Factory.extend({
-      id(i) {
-        return Number(i);
+      id() {
+        return Math.random().toString().substring(2, 9);
       },
       text(i) {
         return `todo #${i}`;
       },
-      completed() {
+      done() {
         return false;
       },
       color() {
@@ -56,22 +56,7 @@ createServer({
     }),
   },
   serializers: {
-    todo: IdSerializer.extend({
-      serialize(object, request) {
-        const numerifyId = (todo) => {
-          todo.id = Number(todo.id);
-        };
-        let json = IdSerializer.prototype.serialize.apply(this, arguments);
-
-        if (json.todo) {
-          numerifyId(json.todo);
-        } else if (json.todos) {
-          json.todos.forEach(numerifyId);
-        }
-
-        return json;
-      },
-    }),
+    todo: IdSerializer,
     list: IdSerializer,
   },
   seeds(server) {
