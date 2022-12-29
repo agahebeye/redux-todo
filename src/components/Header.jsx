@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { saveTodo } from "./todos/todosReducer";
 
 export function Header() {
   const [text, setText] = useState("");
@@ -10,7 +11,7 @@ export function Header() {
   const handleKeyDown = (e) => {
     const value = e.target.value.trim();
     if (e.key === "Enter" && value) {
-      dispatch({ type: "todos/added", payload: value });
+      dispatch(saveTodo(text));
       setText("");
     }
   };

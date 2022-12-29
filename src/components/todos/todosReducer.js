@@ -1,3 +1,5 @@
+import { createSelector } from "reselect";
+
 export function todosReducer(state = [], action) {
   const { type, payload } = action;
 
@@ -6,14 +8,7 @@ export function todosReducer(state = [], action) {
       return action.payload;
 
     case "todos/added":
-      return [
-        ...state,
-        {
-          id: Math.random().toString().substring(2, 9),
-          text: payload,
-          done: false,
-        },
-      ];
+      return [...state, action.payload];
 
     case "todos/toggled":
       return state.map((todo) => {
@@ -57,8 +52,27 @@ export function todosReducer(state = [], action) {
   }
 }
 
-export async function fetchTodos(dispatch, getState) {
+export async function fetchTodos(dispatch) {
   const response = await fetch("/api/todos");
   const data = await response.json();
   dispatch({ type: "todos/loaded", payload: data.todos });
 }
+
+export function saveTodo(text) {
+  return async (dispatch) => {
+    const todo = { text };
+    const response = await fetch("/api/todos", {
+      method: "post",
+      body: JSON.stringify({ todo }),
+    });
+
+    const data = await response.json();
+    // console.log(data);
+    dispatch({ type: "todos/added", payload: data.todo });
+  };
+}
+
+export const selectTodoIds = createSelector(
+  (state) => state.todos,
+  (todos) => todos.map((todo) => todo.id)
+);

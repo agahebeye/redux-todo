@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "reselect": "^4.1.7"
   },
   "devDependencies": {
     "@redux-devtools/extension": "^3.2.3",
