@@ -1,14 +1,20 @@
 import { useSelector } from "react-redux";
 import { TodoListItem } from "./TodoListItem";
-import { selectTodoIds, selectTodos } from "./todosReducer";
+import { selectFilteredTodos } from "./todosReducer";
 
 export function TodoList() {
-  const todos = useSelector(selectTodos);
-  const todoIds = useSelector(selectTodoIds);
+  const todos = useSelector(selectFilteredTodos);
+  const isLoading = useSelector((state) => state.todos.status);
 
-  const todosElements = todos.map((todo) => (
-    <TodoListItem key={todo.id} id={todo.id} />
-  ));
+  if (isLoading === "loading") {
+    return <div>loading...</div>;
+  }
 
-  return <ul>{todosElements}</ul>;
+  return (
+    <ul>
+      {todos.map((todo) => (
+        <TodoListItem key={todo.id} id={todo.id} />
+      ))}
+    </ul>
+  );
 }

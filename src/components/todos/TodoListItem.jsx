@@ -2,13 +2,11 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { availableColors } from "../filters/colors";
+import { selectTodoById } from "./todosReducer";
 
 export function TodoListItem(props) {
   const dispatch = useDispatch();
-
-  const todo = useSelector((state) => {
-    return state.todos.find((todo) => todo.id === props.id);
-  });
+  const todo = useSelector((state) => selectTodoById(state, props.id));
 
   return (
     <li>

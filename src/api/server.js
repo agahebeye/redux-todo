@@ -15,7 +15,7 @@ const IdSerializer = RestSerializer.extend({
 createServer({
   routes() {
     this.namespace = "api";
-    //this.timing = 2000
+    this.timing = 2000;
 
     this.resource("todos");
     this.resource("lists");
@@ -60,6 +60,6 @@ createServer({
     list: IdSerializer,
   },
   seeds(server) {
-    // server.createList("todo", 5);
+    server.createList("todo", 3);
   },
 });

@@ -2,72 +2,101 @@ import { createSelector } from "reselect";
 import { statusTypes } from "../filters/filtersReducer";
 
 const initialState = {
-  status: "loading",
-  items: [],
+  status: "idle",
+  items: {},
 };
 
 export function todosReducer(state = initialState, action) {
-  const { type, payload } = action;
-
-  switch (type) {
-    case "todos/loaded":
+  switch (action.type) {
+    case "todos/loading":
       return {
-        status: state.status,
-        items: action.payload,
+        ...state,
+        status: "loading",
       };
 
-    case "todos/added":
-      return { status: state.status, items: [...state.items, action.payload] };
-
-    case "todos/toggled":
+    case "todos/loaded": {
       return {
-        status: state.status,
-        items: state.items.map((todo) => {
-          if (todo.id !== payload) {
-            return todo;
-          }
-
-          return { ...todo, done: !todo.done };
-        }),
+        ...state,
+        status: "idle",
+        items: action.payload.reduce((acc, curr) => {
+          acc[curr.id] = curr;
+          return acc;
+        }, {}),
       };
+    }
+
+    case "todos/added": {
+      const todo = action.payload;
+
+      return {
+        ...state,
+        status: "idle",
+        items: {
+          ...state.items,
+          [todo.id]: todo,
+        },
+      };
+    }
+
+    case "todos/toggled": {
+      const id = action.payload;
+      const todo = state.items[id];
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [id]: { ...todo, done: !todo.done },
+        },
+      };
+    }
 
     case "todos/deleted": {
+      const newItems = { ...state.items };
+      delete newItems[action.payload];
+
       return {
-        status: state.status,
-        items: state.items.filter((todo) => todo.id !== action.payload),
+        ...state,
+        items: newItems,
       };
     }
 
     case "todos/markAllCompleted": {
       return {
-        status: state.status,
-        items: state.items.map((todo) => {
-          return { ...todo, done: true };
-        }),
+        ...state,
+        items: Object.values(state.items).reduce((acc, curr) => {
+          acc[curr.id] = { ...curr, done: true };
+          return acc;
+        }, {}),
       };
     }
 
     case "todos/clearCompleted": {
+      const items = Object.values(state.items).reduce((acc, curr) => {
+        if (!curr.done) {
+          acc[curr.id] = curr;
+        }
+        return acc;
+      }, {});
+
       return {
-        status: state.status,
-        items: state.items.filter((todo) => !todo.done),
+        ...state,
+        items,
       };
     }
 
     case "todos/colorSelected": {
       const { color, todoId } = action.payload;
+      const todo = state.entities[todoId];
       return {
-        status: state.status,
-        items: state.items.map((todo) => {
-          if (todo.id !== todoId) {
-            return todo;
-          }
-
-          return {
+        ...state,
+        entities: {
+          ...state.entities,
+          [todoId]: {
             ...todo,
             color,
-          };
-        }),
+          },
+        },
       };
     }
 
@@ -77,8 +106,11 @@ export function todosReducer(state = initialState, action) {
 }
 
 export async function fetchTodos(dispatch) {
+  dispatch({ type: "todos/loading" });
+
   const response = await fetch("/api/todos");
   const data = await response.json();
+
   dispatch({ type: "todos/loaded", payload: data.todos });
 }
 
@@ -96,14 +128,18 @@ export function saveTodo(text) {
   };
 }
 
-export const selectTodos = (state) => state.todos.items;
+export const selectTodoItems = (state) => state.todos.items;
+
+export const selectTodos = createSelector(selectTodoItems, (items) =>
+  Object.values(items)
+);
 
 export const selectFilteredTodos = createSelector(
   selectTodos,
   (state) => state.filters,
   (todos, filters) => {
     const showAll = filters.status === statusTypes.All;
-    if (showAll && filters.color.length === 0) {
+    if (showAll && filters.colors.length === 0) {
       return todos;
     }
 
@@ -112,7 +148,7 @@ export const selectFilteredTodos = createSelector(
     return todos.filter((todo) => {
       const statusMatched = showAll || todo.done === completedStatus;
       const colorMatched =
-        filters.color.length === 0 || filters.color.include(todo.color);
+        filters.color.length === 0 || filters.colors.include(todo.color);
 
       return statusMatched && colorMatched;
     });
@@ -129,5 +165,5 @@ export const selectFilteredTodoIds = createSelector(
 );
 
 export const selectTodoById = (state, id) => {
-  return selectTodos(state).find((todo) => todo.id === id);
+  return selectTodoItems(state)[id];
 };
