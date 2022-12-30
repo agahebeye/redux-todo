@@ -12,6 +12,7 @@ export function todosReducer(state = initialState, action) {
             id,
             text: action.payload,
             done: false,
+            color: "",
           },
         },
       };
@@ -39,6 +40,24 @@ export function todosReducer(state = initialState, action) {
 
           return acc;
         }, {}),
+      };
+    }
+
+    case "todos/colorPicked": {
+      const { id, color } = action.payload;
+      const todo = state.items[id];
+
+      const items = {
+        ...state.items,
+        [id]: {
+          ...todo,
+          color,
+        },
+      };
+
+      return {
+        ...state,
+        items
       };
     }
 

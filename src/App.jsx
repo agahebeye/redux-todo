@@ -29,9 +29,9 @@ export function App() {
         </ul>
       </div>
 
-      <footer>
+      <footer className="mt-4 text-xs">
         <div>
-          {Object.values(todos).filter((todo) => todo.done === true).length}{" "}
+          {Object.values(todos)?.filter((todo) => todo.done === true).length}{" "}
           todos completed
         </div>
       </footer>
