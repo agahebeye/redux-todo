@@ -64,6 +64,29 @@ export function todosReducer(state = initialState, action) {
       };
     }
 
+    case "todos/completeAll": {
+      return {
+        ...state,
+        items: Object.values(state.items).reduce((acc, curr) => {
+          acc[curr.id] = { ...curr, done: true };
+          return acc;
+        }, {}),
+      };
+    }
+
+    case "todos/clearAll": {
+      return {
+        ...state,
+        items: Object.values(state.items).reduce((acc, curr) => {
+          if (!curr.done) {
+            acc[curr.id] = curr;
+          }
+
+          return acc;
+        }, {}),
+      };
+    }
+
     default: {
       return state;
     }

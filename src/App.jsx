@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TodoListItem } from "./components/TodoListItem";
-import { Footer } from "./components/Footer";
+import { Footer } from "./components/footer/Footer";
 import { selectTodos } from "./reducers/todosReducer";
 
 export function App() {
@@ -37,7 +37,7 @@ export function App() {
         </ul>
       </div>
 
-      <Footer />
+      {todos.length > 0 && <Footer />}
     </div>
   );
 
