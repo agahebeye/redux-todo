@@ -1,9 +1,10 @@
 export function todosReducer(state = { status: {}, items: {} }, action) {
   switch (action.type) {
     case "todos/added": {
-      const id = Math.random().toString().substring(2, 9);
-
       const items = { ...state.items };
+
+      const id = Object.values(items).length;
+
       items[id] = {
         id,
         text: action.payload,

@@ -1,9 +1,11 @@
+import React from "react";
 import { createRoot } from "react-dom/client";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Provider } from "react-redux";
+
 import { store } from "./store";
+import { App } from "./App";
 
 import "tailwindcss/tailwind.css";
-import React from "react";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -12,7 +14,3 @@ createRoot(document.getElementById("root")).render(
     </Provider>
   </React.StrictMode>
 );
-
-function App() {
-  return <></>;
-}
