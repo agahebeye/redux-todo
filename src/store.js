@@ -1,16 +1,11 @@
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
 
-export const store = createStore(function (state = {}, action) {
-  return {
-    todos: todosReducer(state.todos, action),
-    filters: todosReducer(state.filters, action),
-  };
-});
+import { todosReducer } from "./reducers/todosReducer";
+import { filtersReducer } from "./reducers/filtersReducer";
 
-function filtersReducer(state = {}, action) {
-  return state;
-}
-
-function todosReducer(state = { status: {}, items: {} }, action) {
-  return state;
-}
+export const store = createStore(
+  combineReducers({
+    todos: todosReducer,
+    filters: filtersReducer,
+  })
+);

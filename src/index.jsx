@@ -6,8 +6,8 @@ const subscriber = store.subscribe(() =>
   console.log("state", store.getState().todos.items)
 );
 
-store.dispatch({ type: "increment" });
-store.dispatch({ type: "increment" });
+store.dispatch({ type: "todos/added", payload: "Wash dishes" });
+store.dispatch({ type: "todos/added", payload: "Meet my girlfriend" });
 
 subscriber();
 
