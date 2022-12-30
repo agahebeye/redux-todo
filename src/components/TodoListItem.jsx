@@ -6,8 +6,14 @@ export function TodoListItem(props) {
 
   return (
     <li className="mt-4 flex items-center">
-      <input type="checkbox" name="" id="" />
-      <label htmlFor="" className="mr-auto ml-2 first-letter:uppercase">
+      <input
+        type="checkbox"
+        id="text"
+        onClick={() =>
+          dispatch({ type: "todos/toggled", payload: props.todo.id })
+        }
+      />
+      <label htmlFor="text" className="mr-auto ml-2 first-letter:uppercase">
         {props.todo.text}
       </label>
       <button

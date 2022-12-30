@@ -27,6 +27,21 @@ export function todosReducer(state = initialState, action) {
       };
     }
 
+    case "todos/toggled": {
+      return {
+        ...state,
+        items: Object.values(state.items).reduce((acc, curr) => {
+          if (curr.id === action.payload) {
+            acc[curr.id] = { ...curr, done: !curr.done };
+          } else {
+            acc[curr.id] = curr;
+          }
+
+          return acc;
+        }, {}),
+      };
+    }
+
     default: {
       return state;
     }

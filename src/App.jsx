@@ -28,6 +28,13 @@ export function App() {
           })}
         </ul>
       </div>
+
+      <footer>
+        <div>
+          {Object.values(todos).filter((todo) => todo.done === true).length}{" "}
+          todos completed
+        </div>
+      </footer>
     </div>
   );
 
