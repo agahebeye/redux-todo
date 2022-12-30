@@ -1,11 +1,22 @@
+import { useDispatch } from "react-redux";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export function TodoListItem(props) {
+  const dispatch = useDispatch();
+
   return (
-    <li key={idx} className="mt-4 first-letter:uppercase">
+    <li className="mt-4 flex items-center">
       <input type="checkbox" name="" id="" />
-      <label htmlFor="">{todo.text}</label>
-      <XMarkIcon className="w-5 h-5" />
+      <label htmlFor="" className="mr-auto ml-2 first-letter:uppercase">
+        {props.todo.text}
+      </label>
+      <button
+        onClick={() =>
+          dispatch({ type: "todos/deleted", payload: props.todo.id })
+        }
+      >
+        <XMarkIcon className="w-5 h-5" />
+      </button>
     </li>
   );
 }

@@ -24,7 +24,7 @@ export function App() {
       <div className="mt-8">
         <ul className="text-sm">
           {Object.values(todos).map((todo, idx) => {
-            return <TodoListItem key={idx} id={todo.id} />;
+            return <TodoListItem key={idx} todo={todo} />;
           })}
         </ul>
       </div>
