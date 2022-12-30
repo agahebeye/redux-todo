@@ -1,15 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TodoListItem } from "./components/TodoListItem";
+import { Footer } from "./components/Footer";
+import { selectTodos } from "./reducers/todosReducer";
 
 export function App() {
   const [text, setText] = React.useState("");
 
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todos.items);
+  const todos = useSelector(selectTodos);
 
   return (
-    <div className="p-10 max-w-[400px]">
+    <div className="p-10 max-w-[600px]">
       <div>
         <input
           type="text"
@@ -21,20 +23,21 @@ export function App() {
         />
       </div>
 
+      {todos.length > 0 && (
+        <div className="mt-4 text-xs">
+          <strong>{todos.length}</strong> todo(s) left.
+        </div>
+      )}
+
       <div className="mt-8">
         <ul className="text-sm">
-          {Object.values(todos).map((todo, idx) => {
+          {todos.map((todo, idx) => {
             return <TodoListItem key={idx} todo={todo} />;
           })}
         </ul>
       </div>
 
-      <footer className="mt-4 text-xs">
-        <div>
-          {Object.values(todos)?.filter((todo) => todo.done === true).length}{" "}
-          todos completed
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 

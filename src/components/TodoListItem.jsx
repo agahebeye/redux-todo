@@ -44,15 +44,26 @@ export function TodoListItem(props) {
 }
 
 function ColorPicker({ color = "", onColorPicked }) {
+  const className = `
+  border-0 focus:ring-0 text-xs py-1 font-bold capitalize 
+truncate appearance-none pl-5
+  `;
+
   return (
     <select
+      value={color}
       style={{ color }}
       onChange={onColorPicked}
-      className="border-0 focus:ring-0"
+      className={className}
     >
-      <option></option>
+      <option value="" disabled>
+        Pick color
+      </option>
+
       {initialColors.map((color) => (
-        <option key={color}>{color}</option>
+        <option key={color}>
+          {color}
+        </option>
       ))}
     </select>
   );

@@ -1,4 +1,7 @@
+import { createSelector } from "reselect";
+
 const initialState = { status: {}, items: {} };
+
 export function todosReducer(state = initialState, action) {
   switch (action.type) {
     case "todos/added": {
@@ -57,7 +60,7 @@ export function todosReducer(state = initialState, action) {
 
       return {
         ...state,
-        items
+        items,
       };
     }
 
@@ -66,3 +69,9 @@ export function todosReducer(state = initialState, action) {
     }
   }
 }
+
+export const selectTodoItems = (state) => state.todos.items;
+
+export const selectTodos = createSelector(selectTodoItems, (items) =>
+  Object.values(items)
+);
