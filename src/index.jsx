@@ -1,4 +1,18 @@
 import { createRoot } from "react-dom/client";
-// import "tailwindcss/tailwind.css";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./store";
-createRoot(document.getElementById("root")).render(<div></div>);
+
+import "tailwindcss/tailwind.css";
+import React from "react";
+
+createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
+
+function App() {
+  return <></>;
+}
