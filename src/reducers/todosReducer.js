@@ -103,10 +103,13 @@ export const selectFilteredTodos = createSelector(
   selectTodos,
   (state) => state.filters,
   (items, filters) => {
-    if (filters.status === "All") {
-      return items;
-    }
+    const { status, colors } = filters;
 
-    return items.filter((item) => item.done === (filters.status === "Complete"));
+    const allSelected = status === "All";
+    const completeSelected = status === "Complete";
+
+    return items
+      .filter((item) => allSelected || item.done === completeSelected)
+      .filter((item) => colors.length === 0 || colors.includes(item.color));
   }
 );
