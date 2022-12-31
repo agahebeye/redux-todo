@@ -6,6 +6,9 @@ import { store } from "./store";
 import { App } from "./App";
 
 import "tailwindcss/tailwind.css";
+import { fetchTodos } from "./reducers/todosReducer";
+
+store.dispatch(fetchTodos);
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

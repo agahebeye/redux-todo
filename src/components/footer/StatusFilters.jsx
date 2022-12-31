@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 export function StatusFilters() {
   const { status } = useSelector((state) => state.filters);
   const dispatch = useDispatch();
-  
+
   return (
     <div>
       <div className="font-bold text-gray-800">Filter by status</div>

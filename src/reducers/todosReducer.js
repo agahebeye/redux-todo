@@ -93,6 +93,12 @@ export function todosReducer(state = initialState, action) {
   }
 }
 
+export const fetchTodos = async (dispatch) => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+  const data = await response.json();
+  console.log(data);
+};
+
 export const selectTodoItems = (state) => state.todos.items;
 
 export const selectTodos = createSelector(selectTodoItems, (items) =>
