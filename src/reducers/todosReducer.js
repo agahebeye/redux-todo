@@ -98,3 +98,15 @@ export const selectTodoItems = (state) => state.todos.items;
 export const selectTodos = createSelector(selectTodoItems, (items) =>
   Object.values(items)
 );
+
+export const selectFilteredTodos = createSelector(
+  selectTodos,
+  (state) => state.filters,
+  (items, filters) => {
+    if (filters.status === "All") {
+      return items;
+    }
+
+    return items.filter((item) => item.done === (filters.status === "Complete"));
+  }
+);
