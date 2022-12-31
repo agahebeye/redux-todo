@@ -11,7 +11,17 @@ export function filtersReducer(state = initialState, action) {
       };
     }
 
-    case "filters/colorChanged": {
+    case "filters/colorPicked": {
+      const { color, picked } = action.payload;
+      const colors =
+        picked === true
+          ? state.colors.filter((c) => c !== color)
+          : [...state.colors, color];
+
+      return {
+        ...state,
+        colors,
+      };
     }
 
     default:
